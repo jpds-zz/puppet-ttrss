@@ -7,6 +7,7 @@ class ttrss::config(
     $dbname               = undef,
     $dbusername           = undef,
     $dbpassword           = undef,
+    $dbserver             = undef,
     $dbtype               = undef,
     $enable_update_daemon = false,
     $single_user_mode     = false,
@@ -28,6 +29,10 @@ class ttrss::config(
 
     if ! $dbpassword {
         fail("No database password specified.")
+    }
+
+    if ! $dbserver {
+        fail("No database server specified.")
     }
 
     case $dbtype {
