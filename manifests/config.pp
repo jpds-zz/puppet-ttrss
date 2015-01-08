@@ -22,6 +22,14 @@ class ttrss::config(
         fail("No database name specified.")
     }
 
+    if ! $dbusername {
+        fail("No database username specified.")
+    }
+
+    if ! $dbpassword {
+        fail("No database password specified.")
+    }
+
     case $dbtype {
         "mysql": { $php_db_package = 'php5-mysql' }
         "pgsql": { $php_db_package = 'php5-pgsql' }
