@@ -4,8 +4,13 @@
 #
 
 class ttrss(
-    $dbtype = 'asdf',
-    $single_user_mode = false,
+    $dbname               = undef,
+    $dbusername           = undef,
+    $dbpassword           = undef,
+    $dbtype               = undef,
+    $enable_update_daemon = false,
+    $single_user_mode     = false,
+    $ttrsspath            = "http://www.example.com/tt-rss",
 ) {
   if ($::osfamily != 'Debian') {
     fail("${::operatingsystem} not supported")
@@ -14,8 +19,13 @@ class ttrss(
   anchor { 'ttrss::begin': } ->
   class { 'ttrss::package': } ->
   class { 'ttrss::config':
-    dbtype           => $dbtype,
-    single_user_mode => $single_user_mode,
+    dbname               => $dbname,
+    dbusername           => $dbusername,
+    dbpassword           => $dbpassword,
+    dbtype               => $dbtype,
+    enable_update_daemon => $enable_update_daemon,
+    single_user_mode     => $single_user_mode,
+    ttrsspath            => $ttrsspath,
   }
   class { 'ttrss::service': } ->
   anchor { 'ttrss::end': }

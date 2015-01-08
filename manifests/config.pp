@@ -4,18 +4,28 @@
 #
 
 class ttrss::config(
-    $ttrsspath = "http://www.example.com/tt-rss",
-    $single_user_mode = false,
-    $dbname = "ttrss",
-    $dbusername = undef,
-    $dbpassword = undef,
-    $dbtype = undef,
+    $dbname               = undef,
+    $dbusername           = undef,
+    $dbpassword           = undef,
+    $dbtype               = undef,
     $enable_update_daemon = false,
+    $single_user_mode     = false,
+    $ttrsspath            = "http://www.example.com/tt-rss",
 ) {
     if $enable_update_daemon {
         $update_daemon = 0
     } else {
         $update_daemon = 1
+    }
+
+    if ! $dbname {
+        fail("No database name specified.")
+    }
+
+    case $dbtype {
+        "mysql": { $php_db_package = 'php5-mysql' }
+        "pgsql": { $php_db_package = 'php5-pgsql' }
+        default: { fail("Valid database backend required, found '${dbtype}'") }
     }
 
     file { '/etc/tt-rss/config.php':
@@ -40,12 +50,6 @@ class ttrss::config(
         mode    => '0644',
         owner   => 'root',
         group   => 'root',
-    }
-
-    case $dbtype {
-        "mysql": { $php_db_package = 'php5-mysql' }
-        "pgsql": { $php_db_package = 'php5-pgsql' }
-        default: { fail("Valid database backend required, found ${dbtype}") }
     }
 
     package { "$php_db_package":
