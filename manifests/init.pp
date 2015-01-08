@@ -1,59 +1,26 @@
-class ttrss {
-    package { 'tt-rss':
-        ensure => installed,
-        before => File['/etc/tt-rss/config.php'],
-    }
+# == Class: ttrss
+#
+# Sets up ttrss with a set of rules.
+#
 
-    $ttrsspath = "http://www.example.com/tt-rss"
-    $single_user_mode = false
-    $dbname = "ttrss"
-    $dbusername = undef
-    $dbpassword = undef
-    $dbtype = undef
+class ttrss(
+    $dbtype = 'asdf',
+    $single_user_mode = false,
+) {
+  if ($::osfamily != 'Debian') {
+    fail("${::operatingsystem} not supported")
+  }
 
-    $enable_update_daemon = false
+  anchor { 'ttrss::begin': } ->
+  class { 'ttrss::package': } ->
+  class { 'ttrss::config':
+    dbtype           => $dbtype,
+    single_user_mode => $single_user_mode,
+  }
+  class { 'ttrss::service': } ->
+  anchor { 'ttrss::end': }
 
-    if $enable_update_daemon {
-        $update_daemon = 0
-    } else {
-        $update_daemon = 1
-    }
-
-    file { '/etc/tt-rss/config.php':
-        ensure  => file,
-        content => template('ttrss/config.php.erb'),
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-    }
-
-    file { '/etc/tt-rss/database.php':
-        ensure  => file,
-        content => template('ttrss/database.php.erb'),
-        mode    => '0640',
-        owner   => 'root',
-        group   => 'www-data',
-    }
-
-    file { '/etc/default/tt-rss':
-        ensure  => file,
-        content => template('ttrss/default/tt-rss.erb'),
-        mode    => '0644',
-        owner   => 'root',
-        group   => 'root',
-    }
-
-    service { 'tt-rss':
-        ensure    => $enable_update_daemon,
-        subscribe => File['/etc/default/tt-rss'],
-    }
-
-    $php_db_package = $dbtype ? {
-        mysql => 'php5-mysql',
-        pgsql => 'php5-pgsql',
-    }
-
-    package { "$php_db_package":
-        ensure => "present",
-    }
+  Anchor['ttrss::begin']  ~> Class['ttrss::service']
+  Class['ttrss::package'] ~> Class['ttrss::service']
+  Class['ttrss::config']  ~> Class['ttrss::service']
 }
