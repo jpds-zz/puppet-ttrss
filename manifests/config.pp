@@ -11,7 +11,7 @@ class ttrss::config(
     $dbtype               = undef,
     $enable_update_daemon = false,
     $single_user_mode     = false,
-    $ttrsspath            = "http://www.example.com/tt-rss",
+    $ttrsspath            = 'http://www.example.com/tt-rss',
 ) {
     if $enable_update_daemon {
         $update_daemon = 0
@@ -20,24 +20,24 @@ class ttrss::config(
     }
 
     if ! $dbname {
-        fail("No database name specified.")
+        fail('No database name specified.')
     }
 
     if ! $dbusername {
-        fail("No database username specified.")
+        fail('No database username specified.')
     }
 
     if ! $dbpassword {
-        fail("No database password specified.")
+        fail('No database password specified.')
     }
 
     if ! $dbserver {
-        fail("No database server specified.")
+        fail('No database server specified.')
     }
 
     case $dbtype {
-        "mysql": { $php_db_package = 'php5-mysql' }
-        "pgsql": { $php_db_package = 'php5-pgsql' }
+        'mysql': { $php_db_package = 'php5-mysql' }
+        'pgsql': { $php_db_package = 'php5-pgsql' }
         default: { fail("Valid database backend required, found '${dbtype}'") }
     }
 
@@ -65,7 +65,7 @@ class ttrss::config(
         group   => 'root',
     }
 
-    package { "$php_db_package":
-        ensure => "present",
+    package { $php_db_package:
+        ensure => 'present',
     }
 }
