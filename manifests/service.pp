@@ -5,7 +5,7 @@
 
 class ttrss::service {
     service { 'tt-rss':
-        ensure    => $enable_update_daemon,
+        ensure    => $::enable_update_daemon,
         subscribe => File['/etc/default/tt-rss'],
     }
 }

@@ -11,7 +11,7 @@ class ttrss(
     $dbtype               = undef,
     $enable_update_daemon = false,
     $single_user_mode     = false,
-    $ttrsspath            = "http://www.example.com/tt-rss",
+    $ttrsspath            = 'http://www.example.com/tt-rss',
 ) {
   if ($::osfamily != 'Debian') {
     fail("${::operatingsystem} not supported")
