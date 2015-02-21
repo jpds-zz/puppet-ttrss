@@ -9,10 +9,10 @@ class ttrss(
     $dbpassword           = undef,
     $dbserver             = undef,
     $dbtype               = undef,
-    $enable_update_daemon = false,
+    $enable_update_daemon = $ttrss::params::enable_update_daemon,
     $single_user_mode     = false,
     $ttrsspath            = 'http://www.example.com/tt-rss',
-) {
+) inherits ttrss::params {
   if ($::osfamily != 'Debian') {
     fail("${::operatingsystem} not supported")
   }
@@ -25,7 +25,7 @@ class ttrss(
     dbpassword           => $dbpassword,
     dbserver             => $dbserver,
     dbtype               => $dbtype,
-    enable_update_daemon => $enable_update_daemon,
+    enable_update_daemon => $ttrss::params::enable_update_daemon,
     single_user_mode     => $single_user_mode,
     ttrsspath            => $ttrsspath,
   }

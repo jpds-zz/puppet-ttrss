@@ -9,16 +9,10 @@ class ttrss::config(
     $dbpassword           = undef,
     $dbserver             = undef,
     $dbtype               = undef,
-    $enable_update_daemon = false,
+    $enable_update_daemon = $ttrss::params::enable_update_daemon,
     $single_user_mode     = false,
     $ttrsspath            = 'http://www.example.com/tt-rss',
-) {
-    if $enable_update_daemon {
-        $update_daemon = 0
-    } else {
-        $update_daemon = 1
-    }
-
+) inherits ttrss::params {
     if ! $dbname {
         fail('No database name specified.')
     }
