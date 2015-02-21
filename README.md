@@ -2,6 +2,10 @@
 
 This Puppet module contains configuration for Tiny Tiny RSS.
 
+## Build Status
+
+[![Build Status](https://travis-ci.org/jpds/puppet-ttrss.svg?branch=master)](https://travis-ci.org/jpds/puppet-ttrss)
+
 ## Example usage
 
 Parameters for module configuration:
