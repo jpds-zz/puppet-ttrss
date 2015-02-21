@@ -13,6 +13,12 @@ class ttrss::config(
     $single_user_mode     = false,
     $ttrsspath            = 'http://www.example.com/tt-rss',
 ) inherits ttrss::params {
+  if $enable_update_daemon {
+    $update_daemon = 0
+  } else {
+    $update_daemon = 1
+  }
+
     if ! $dbname {
         fail('No database name specified.')
     }

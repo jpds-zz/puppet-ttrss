@@ -15,7 +15,7 @@ describe 'ttrss', :type => 'class' do
         :dbpassword           => 'password',
         :dbserver             => 'localhost',
         :dbtype               => 'pgsql',
-        :enable_update_daemon => true,
+        :enable_update_daemon => false,
         :single_user_mode     => true,
         :ttrsspath            => 'http://news.example.com',
       }
@@ -24,8 +24,6 @@ describe 'ttrss', :type => 'class' do
     it { should compile }
     it { should contain_package('tt-rss') \
       .that_comes_before('File[/etc/tt-rss/config.php]') }
-    it { should contain_file('/etc/tt-rss/config.php') \
-      .with_path('/etc/tt-rss/config.php') }
     it {
       should contain_file('/etc/tt-rss/config.php').with(
         'ensure' => 'file',
@@ -35,6 +33,29 @@ describe 'ttrss', :type => 'class' do
         'group'  => 'root',
       )
     }
+    it {
+      should contain_file('/etc/default/tt-rss').with(
+        'ensure' => 'file',
+        'path'   => '/etc/default/tt-rss',
+        'mode'   => '0644',
+        'owner'  => 'root',
+        'group'  => 'root',
+      ).with_content(/^DISABLED=1$/)
+    }
+
+    context 'enable_update_daemon => true' do
+      let :params do
+        super().merge({
+          :enable_update_daemon => true
+        })
+      end
+
+      it do
+        should contain_file('/etc/default/tt-rss') \
+          .with_content(/^DISABLED=0$/)
+      end
+    end
+
   end
 
   context "on an unknown OS" do

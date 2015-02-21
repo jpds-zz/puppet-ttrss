@@ -25,7 +25,7 @@ class ttrss(
     dbpassword           => $dbpassword,
     dbserver             => $dbserver,
     dbtype               => $dbtype,
-    enable_update_daemon => $ttrss::params::enable_update_daemon,
+    enable_update_daemon => $enable_update_daemon,
     single_user_mode     => $single_user_mode,
     ttrsspath            => $ttrsspath,
   }
