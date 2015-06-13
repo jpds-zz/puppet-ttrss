@@ -29,7 +29,9 @@ class ttrss(
     single_user_mode     => $single_user_mode,
     ttrsspath            => $ttrsspath,
   }
-  class { 'ttrss::service': } ->
+  class { 'ttrss::service':
+    enable_update_daemon => $enable_update_daemon,
+  } ->
   anchor { 'ttrss::end': }
 
   Anchor['ttrss::begin']  ~> Class['ttrss::service']

@@ -42,6 +42,7 @@ describe 'ttrss', :type => 'class' do
         'group'  => 'root',
       ).with_content(/^DISABLED=1$/)
     }
+    it { should contain_service('tt-rss').with_ensure(false) }
 
     context 'enable_update_daemon => true' do
       let :params do
@@ -54,6 +55,8 @@ describe 'ttrss', :type => 'class' do
         should contain_file('/etc/default/tt-rss') \
           .with_content(/^DISABLED=0$/)
       end
+
+      it { should contain_service('tt-rss').with_ensure(true) }
     end
 
   end
