@@ -11,4 +11,5 @@ class ttrss::params {
   }
 
   $enable_update_daemon = false
+  $session_check_address = 1
 }
