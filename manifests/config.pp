@@ -4,14 +4,15 @@
 #
 
 class ttrss::config(
-    $dbname               = undef,
-    $dbusername           = undef,
-    $dbpassword           = undef,
-    $dbserver             = undef,
-    $dbtype               = undef,
-    $enable_update_daemon = $ttrss::params::enable_update_daemon,
-    $single_user_mode     = false,
-    $ttrsspath            = 'http://www.example.com/tt-rss',
+    $dbname                = undef,
+    $dbusername            = undef,
+    $dbpassword            = undef,
+    $dbserver              = undef,
+    $dbtype                = undef,
+    $enable_update_daemon  = $ttrss::params::enable_update_daemon,
+    $single_user_mode      = false,
+    $ttrsspath             = 'http://www.example.com/tt-rss',
+    $session_check_address = $ttrss::params::session_check_address,
 ) inherits ttrss::params {
   if $enable_update_daemon {
     $update_daemon = 0

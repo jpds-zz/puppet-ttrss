@@ -31,7 +31,7 @@ describe 'ttrss', :type => 'class' do
         'mode'   => '0644',
         'owner'  => 'root',
         'group'  => 'root',
-      )
+      ).with_content(/define\('SESSION_CHECK_ADDRESS', 1\);/)
     }
     it {
       should contain_file('/etc/default/tt-rss').with(
@@ -57,6 +57,19 @@ describe 'ttrss', :type => 'class' do
       end
 
       it { should contain_service('tt-rss').with_ensure(true) }
+    end
+
+    context 'session_check_address' do
+      let :params do
+        super().merge({
+          :session_check_address => 0
+        })
+      end
+
+      it do
+        should contain_file('/etc/tt-rss/config.php') \
+          .with_content(/define\('SESSION_CHECK_ADDRESS', 0\);/)
+      end
     end
 
   end
